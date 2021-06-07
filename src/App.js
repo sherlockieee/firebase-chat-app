@@ -5,13 +5,22 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 import React, {useState, useRef} from 'react';
+import Picker from 'emoji-picker-react';
 
 import { useAuthState } from 'react-firebase-hooks/auth'; 
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+
+
 //set Firebase Configuration
 var firebaseConfig = {
-  
+  apiKey: "AIzaSyDv7xz8IIXahwjsZfYLr_c0BXn8iJLQZwY",
+  authDomain: "fir-chat-app-f726e.firebaseapp.com",
+  projectId: "fir-chat-app-f726e",
+  storageBucket: "fir-chat-app-f726e.appspot.com",
+  messagingSenderId: "455430522868",
+  appId: "1:455430522868:web:406eee1a7fb65028ad1ba1",
+  measurementId: "G-P4MBXPVGND"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -29,7 +38,7 @@ function App() {
   return (
     <div className="App">
         <header className = "App-header">
-          <h1>Exclusive Chat Room for Smoking Hot People</h1>
+          <h2>Exclusive Chat Room for Smoking Hot People</h2>
           <SignOut/>
         </header>
 
@@ -50,7 +59,7 @@ function SignIn() {
 
   return (
     <>
-    <button onClick = {signInWithGoogle}>Sign in with Google</button>
+    <button className = "btn sign-in" onClick = {signInWithGoogle}>Sign in with Google</button>
     </>
   )
 }
@@ -58,7 +67,7 @@ function SignIn() {
 function SignOut() {
   // button occurs only if there's a user
   return auth.currentUser && (
-    <button onClick = {() => auth.signOut()}>Sign Out</button>
+    <button className = "btn" onClick = {() => auth.signOut()}>Sign Out</button>
   )
 }
 
@@ -71,28 +80,33 @@ function ChatRoom() {
 
   const [formValue, setFormValue] = useState('');
 
+  const [emojiPickerState, setEmojiPickerState] = useState(false);
+
   // for scroll effect
   const dummy = useRef();
 
   const sendMessage = async (e) => {
-    console.log(formValue);
-    console.log(messages)
+    
     //prevent reload
     e.preventDefault();
+    if (formValue){
+      const { uid, photoURL } = auth.currentUser;
+      //add messages
+      await messagesRef.add({
+        text: formValue,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid,
+        photoURL
+      })
+      //reset form value
+      setFormValue('');
 
-    const { uid, photoURL } = auth.currentUser;
-    //add messages
-    await messagesRef.add({
-      text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      photoURL
-    })
-    //reset form value
-    setFormValue('');
-
-    dummy.current.scrollIntoView({behavior: 'smooth'});
+      dummy.current.scrollIntoView({behavior: 'smooth'});
+    }
+    
   }
+
+  
 
   return (
     <div>
@@ -102,19 +116,35 @@ function ChatRoom() {
         {messages && messages.map(msg => 
           <ChatMessage key={msg.id} message = {msg} />)
         }
-
+        
         <div ref={dummy}></div>
 
       </main>
-
+    {/*       
+      {emojiPickerState && 
+      <Picker 
+          onEmojiClick = {
+            (e, emojiObject) => {
+          setFormValue(formValue + emojiObject.emoji)
+          }
+        }
+        
+        pickerStyle = {{position: 'fixed', bottom: '70px', right: '50px'}}
+      />} */}
+  
       <form onSubmit = {sendMessage}>
 
-        <input value={formValue} 
-          onChange = {(e) => setFormValue(e.target.value)}/>
+        <input className = 'textInput' type="text" value={formValue} 
+        onChange = {(e) => setFormValue(e.target.value)}/>
+        
+        {/* <button className = "btn" onClick = {() => setEmojiPickerState(!emojiPickerState)}> Emoji </button> */}
         
         <button type = "submit"> Sent </button>
 
       </form>
+
+      
+          
 
     </div>
 
@@ -129,7 +159,7 @@ function ChatMessage(props) {
 
   return (
     <div className={`message ${messageClass}`}>
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} 
+      <img src={photoURL || 'https://www.pikpng.com/pngl/m/57-573816_avatar-steam-cat-wallpaper-cute-cat-png-cartoon.png'} 
       alt = "User Profile"/>
       <p>{text}</p>
     </div>
