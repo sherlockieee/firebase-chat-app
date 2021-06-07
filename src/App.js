@@ -80,7 +80,7 @@ function ChatRoom() {
 
   const [formValue, setFormValue] = useState('');
 
-  const [emojiPickerState, setEmojiPickerState] = useState(false);
+  // const [emojiPickerState, setEmojiPickerState] = useState(false);
 
   // for scroll effect
   const dummy = useRef();
