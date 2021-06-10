@@ -5,23 +5,30 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 import React, {useState, useRef} from 'react';
-import Picker from 'emoji-picker-react';
+// import Picker from 'emoji-picker-react';
 
 import { useAuthState } from 'react-firebase-hooks/auth'; 
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-
+const {REACT_APP_FIREBASE_API_KEY, 
+REACT_APP_FIREBASE_AUTH_DOMAIN,
+REACT_APP_FIREBASE_PROJECT_ID,
+REACT_APP_FIREBASE_STORAGE_BUCKET,
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+REACT_APP_FIREBASE_APP_ID,
+REACT_APP_FIREBASE_MEASUREMENT_ID} = process.env;
 
 //set Firebase Configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyDv7xz8IIXahwjsZfYLr_c0BXn8iJLQZwY",
-  authDomain: "fir-chat-app-f726e.firebaseapp.com",
-  projectId: "fir-chat-app-f726e",
-  storageBucket: "fir-chat-app-f726e.appspot.com",
-  messagingSenderId: "455430522868",
-  appId: "1:455430522868:web:406eee1a7fb65028ad1ba1",
-  measurementId: "G-P4MBXPVGND"
+const firebaseConfig = {
+  apiKey: REACT_APP_FIREBASE_API_KEY,
+  authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId:  REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: REACT_APP_FIREBASE_APP_ID,
+  measurementId: REACT_APP_FIREBASE_MEASUREMENT_ID
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 

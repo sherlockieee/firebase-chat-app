@@ -81,7 +81,7 @@ form button {
   padding: 0 10px;
 }
 
-.btn {
+button {
   background-color: #282c34;
   /* Green */
   border: none;
