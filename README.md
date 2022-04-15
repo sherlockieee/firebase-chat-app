@@ -1,4 +1,3 @@
-[Try out this app on Firebase](https://fir-chat-app-f726e.web.app/)
 
 # Getting Started with Create React App
 
